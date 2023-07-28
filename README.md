@@ -1,4 +1,3 @@
-# 0x00. Pascal's Triangle
-
-Algorithm
-Python
+# alx-interview
+## Algorithm
+## Python
