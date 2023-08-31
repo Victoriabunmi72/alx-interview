@@ -5,14 +5,11 @@ obtains solution to nqueen puzzle from input value
 '''
 import sys
 
-# List to store the solutions for the puzzle
-output = []
 
-# Size of the chessboard
-n = 0
+output = []  # List of outcomes for puzzle
+n = 0  # Sample size i.e. Size of chess board
+pos = None  # Position on board
 
-# Position on the board
-pos = None
 
 def get_input():
     '''
@@ -37,6 +34,7 @@ def get_input():
         sys.exit(1)
     return n
 
+
 def threats(pos0, pos1):
     '''
     Checks positioning of queens
@@ -45,11 +43,12 @@ def threats(pos0, pos1):
         pos0: The 1st queen's position
         pos1: The 2nd queen's position
 
-    Returns: True if the queens are in attacking position, else False
+    Returns: True if the queens are in attacking postion, else False
     '''
     if (pos0[0] == pos1[0]) or (pos0[1] == pos1[1]):
         return True
     return abs(pos0[0] - pos1[0]) == abs(pos0[1] - pos1[1])
+
 
 def output_exists(group):
     '''
@@ -70,6 +69,7 @@ def output_exists(group):
         if i == n:
             return True
     return False
+
 
 def build_output(row, group):
     '''
@@ -95,6 +95,7 @@ def build_output(row, group):
                 build_output(row + 1, group)
             group.pop(len(group) - 1)
 
+
 def get_output():
     '''
     Gets the output for the given chessboard size
@@ -105,12 +106,8 @@ def get_output():
     group = []
     build_output(a, group)
 
-# Obtain input (size of the chessboard)
+
 n = get_input()
-
-# Generate and store solutions for the puzzle
 get_output()
-
-# Print the solutions
 for out in output:
     print(out)
