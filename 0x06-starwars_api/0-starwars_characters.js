@@ -1,26 +1,32 @@
 #!/usr/bin/node
-// Retrieves the characters for a selected movie from Starwars API
+// using star wars API
+
 const request = require('request');
-const API_URL = 'https://swapi-api.hbtn.io/api';
+const FILMID = process.argv[2];
 
-if (process.argv.length > 2) {
-  request(`${API_URL}/films/${process.argv[2]}/`, (err, _, body) => {
-    if (err) {
-      console.log(err);
-    }
-    const charURL = JSON.parse(body).characters;
-    const charName = charURL.map(
-      url => new Promise((resolve, reject) => {
-        request(url, (promiseErr, __, charactersReqBody) => {
-          if (promiseErr) {
-            reject(promiseErr);
-          }
-          resolve(JSON.parse(charactersReqBody).name);
-        });
-      }));
+// Request URL
+const URL_BASE = 'https://swapi-api.hbtn.io/api/films';
 
-    Promise.all(charName)
-      .then(names => console.log(names.join('\n')))
-      .catch(allErr => console.log(allErr));
+function doRequest (url) {
+  return new Promise(function (resolve, reject) {
+    request(url, function (error, res, body) {
+      if (!error && res.statusCode === 200) {
+        resolve(JSON.parse(body));
+      } else {
+        reject(error);
+      }
+    });
   });
 }
+
+// Usage:
+
+async function main (filmID) {
+  const res = await doRequest(`${URL_BASE}/${filmID}`);
+  for (const e of res.characters) {
+    const pj = await doRequest(e);
+    console.log(pj.name);
+  }
+}
+
+main(FILMID);
